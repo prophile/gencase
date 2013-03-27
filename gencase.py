@@ -18,6 +18,7 @@ Options:
 from docopt import docopt
 from collections import namedtuple
 from decimal import Decimal
+import sys
 
 CASE = 'c'
 LID = 'l'
@@ -192,7 +193,7 @@ def transform(source, t = lambda x, y, z: (x, y, z), inverting = False):
         else:
             yield tuple(result)
 
-def emit_solid_case(settings):
+def emit_solid_case(settings, outfile = sys.stdout):
     m = Mesh()
     hw = settings.width * 0.5
     hl = settings.length * 0.5
@@ -236,8 +237,7 @@ def emit_solid_case(settings):
                               settings.thickness),
                 lambda x, y, z: (-z - hw, x, hd + y),
                 inverting = True)
-    import sys
-    m.write(sys.stdout)
+    m.write(outfile)
 
 def parse_args(args):
     return docopt(__doc__, version = __doc__.splitlines()[0])
